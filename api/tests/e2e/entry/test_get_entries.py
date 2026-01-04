@@ -73,6 +73,7 @@ class GetEntriesTestCase(BaseTestCase):
 
         next_link = None
         previous_link = None
+        page_number = 0
         for i in range(expected_page_count):
             page_number = i + 1
 
@@ -92,3 +93,5 @@ class GetEntriesTestCase(BaseTestCase):
                 self.assertEqual(len(entries), expected_last_page_entry_count)
 
             self.assert_entries_in_page(page_number, self.mock_entry_pagination_limit, entries)
+
+        self.assertEqual(page_number, expected_page_count)

@@ -65,5 +65,5 @@ class EntryAPIView(APIView):
 
         create_entry(subject.strip(), message.strip(), user_name.strip())
 
-        payload = {"status": True, "view": "entry", "method": "post"}
+        payload = {"status": True}
         return Response(payload, status=HTTPStatus.OK)

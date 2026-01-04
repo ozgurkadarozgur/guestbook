@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from api import models
+from api.service.entry_cache import get_user_entry_count_from_cache, get_user_last_entry_from_cache
 from api.tests.e2e.base import BaseTestCase
 
 
@@ -108,6 +109,14 @@ class CreateEntryTestCase(BaseTestCase):
         user = models.User.objects.first()
         self.assertEqual(user.name, user_name)
 
+        entry_count_in_cache = get_user_entry_count_from_cache(user.id)
+        self.assertEqual(entry_count_in_cache, entry_count)
+
+        last_entry_in_db = models.Entry.objects.filter(user_id=user.id).order_by("-id").first()
+        last_entry_in_cache = get_user_last_entry_from_cache(user.id)
+        self.assertEqual(last_entry_in_db.subject, last_entry_in_cache["subject"])
+        self.assertEqual(last_entry_in_db.message, last_entry_in_cache["message"])
+
     def test_create_entries_with_different_user_names(self):
         user_count_before_create_entries = models.User.objects.count()
         self.assertEqual(user_count_before_create_entries, 0)
@@ -136,3 +145,7 @@ class CreateEntryTestCase(BaseTestCase):
 
         for entry_user_name in entry_user_names:
             self.assertTrue(models.User.objects.filter(name=entry_user_name).exists())
+
+        user_ids = list(models.User.objects.values_list("id", flat=True))
+        for user_id in user_ids:
+            self.assertEqual(get_user_entry_count_from_cache(user_id), 1)

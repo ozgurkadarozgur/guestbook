@@ -9,10 +9,10 @@ class BaseTestCase(TestCase):
     def setUp(self):
         super().setUp()
 
-        self.http_client = APIClient()
+        self._http_client = APIClient()
 
     def send_get_request(self, path: str) -> Response:
-        return self.http_client.get(path)
+        return self._http_client.get(path)
 
     def send_post_request(self, path: str, data: dict[str, Any]) -> Response:
-        return self.http_client.post(path, data, "json")
+        return self._http_client.post(path, data, "json")
