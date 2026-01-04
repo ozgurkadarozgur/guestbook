@@ -4,10 +4,14 @@ from django.test import TestCase
 from rest_framework.response import Response
 from rest_framework.test import APIClient
 
+from api.service.entry_cache import cache_store
+
 
 class BaseTestCase(TestCase):
     def setUp(self):
         super().setUp()
+
+        cache_store.flush()
 
         self._http_client = APIClient()
 

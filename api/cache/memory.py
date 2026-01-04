@@ -25,3 +25,6 @@ class MemoryCacheAdapter:
     def get(self, key: str) -> Any | None:
         with self._lock:
             return self.storage.get(key)
+
+    def flush(self):
+        self.storage.clear()
