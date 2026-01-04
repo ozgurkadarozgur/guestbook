@@ -69,6 +69,13 @@ def get_entries(next_cursor: int | None = None, previous_cursor: int | None = No
 
 
 def get_users_entry_statuses() -> list[UserEntryStatusDTO]:
+    """
+    This method retrieves all users from database. Total entry count and last entry information retrieved from cache.
+
+    Instead of this approach, if requested NoSQL database can be used to store entry information with username when entry created.
+    With this way, data will be generated instantly and can be retrieved without any complicated logics.
+    """
+
     all_users = get_all_users()
 
     users_entry_statuses: list[UserEntryStatusDTO] = []
